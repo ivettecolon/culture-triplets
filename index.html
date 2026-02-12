@@ -29,22 +29,22 @@ const CONFIG = {
     // Option 1: Auto-discover images (fetches manifest.json from imageDirectory)
     // Create manifest.json with: {"images": ["image1.png", "image2.png", ...]}
     useManifest: true,
-    
+
     
     // Trial configuration
     numRandomTrials: 5,
-    numCheckTrials: 1,
+    numCheckTrials: 2,
     numValidationTrials: 2,
     
     // Validation triplets - hardcoded for consistency
-    // Set to null to randomly sample validation trials each time, otherwise provide an array of triplets
+    // Set to null to randomly sample validation trials each time, otherwise provide a fixed set of triplets
     validationTriplets: null,
     
     // Data saving
     experimentId: "FywDeGGEu5T3",
-    filenamePrefix: "crossculture_triplets_food2",
+    filenamePrefix: "crosscultural_food2",
     
-    
+
     // Other settings
     speedThreshold: 900,  // RT threshold for "going too fast" warning
     consentImage: "kc_lab_consent_prolific.png",
@@ -67,7 +67,7 @@ const jsPsych = initJsPsych({
     max_load_time: 120000,
     on_finish: function(data){ 
         //const completionUrl = `https://uwmadison.sona-systems.com/webstudy_credit.aspx?experiment_id=${CONFIG.sonaExperimentId}&credit_token=${CONFIG.sonaCreditToken}&survey_code=${sona_id}`;
-        window.location.assign(completionUrl);
+        //window.location.assign(completionUrl);
     }
 });
 
@@ -158,8 +158,8 @@ function generateCheckTrial() {
     const images = getUniqueRandomImages(2);
     if (!images) return null;
     
-    const [stimulus, correctChoice] = images;
-    const incorrectChoice = stimulus;
+    const [stimulus, incorrectChoice] = images;
+    const correctChoice = stimulus;  // The correct choice is the duplicate of the stimulus
     const correctIndex = Math.random() < 0.5 ? 0 : 1;
     
     return {
@@ -233,11 +233,11 @@ const fullscreen = {
 };
 
 // Consent
-/* const consent = {
+const consent = {
     type: jsPsychImageButtonResponse,
     stimulus: CONFIG.consentImage,
     choices: ["Consent & Continue"]
-}; */
+};
 
 // Instructions
 const instructions = {

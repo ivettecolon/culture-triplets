@@ -2,9 +2,9 @@ import os
 from PIL import Image
 
 # Define the input and output directories
-input_directory = 'stimuli/tools2/'  # Change this to your input directory
-output_directory = 'stimuli/tools2_resized/'  # Change this to your output directory
-resize_percentage = 30  # Change this to the desired percentage
+input_directory = 'stimuli/tools2_original_size/'  # Change this to your input directory
+output_directory = 'stimuli/tools2'  # Change this to your output directory
+resize_percentage = 20  # Change this to the desired percentage
 
 # Create the output directory if it doesn't exist
 if not os.path.exists(output_directory):
