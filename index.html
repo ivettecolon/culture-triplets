@@ -233,11 +233,11 @@ const fullscreen = {
 };
 
 // Consent
-const consent = {
+/* const consent = {
     type: jsPsychImageButtonResponse,
     stimulus: CONFIG.consentImage,
     choices: ["Consent & Continue"]
-};
+}; */
 
 // Instructions
 const instructions = {
@@ -407,7 +407,7 @@ async function initializeExperiment() {
     timeline.push(preload);
     timeline.push(welcome);
     timeline.push(fullscreen);
-    timeline.push(consent);
+    //timeline.push(consent);
     timeline.push(instructions);
     
     // Generate trials and add to main procedure
