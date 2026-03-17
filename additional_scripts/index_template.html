@@ -263,7 +263,13 @@ const fullscreen = {
 const consent = {
     type: jsPsychImageButtonResponse,
     stimulus: CONFIG.consentImage,
-    choices: ["Consent & Continue"]
+    choices: ["Continue"]
+};
+
+const consent_confirmation = {
+    type: jsPsychHtmlButtonResponse,
+    stimulus: `<p>I confirm that I have read and understood the volunteer information on the previous page. I understand that I can ask questions by contacting the researcher, Netaniel Rien, via Prolific messages or email (netaniel.rein@mrc-cbu.cam.ac.uk). I understand that my participation is voluntary. I am free to withdraw at any time, without giving a reason, without penalty or affecting my legal rights.</p>`,
+    choices: ["I consent"]
 };
 
 // Instructions
@@ -384,8 +390,53 @@ const demographics = {
 const id_age = {
     type: jsPsychSurveyText,
     questions: [
-        {prompt: "Please enter your age (in years):", rows: 1, columns: 6, name: "age", required: true}, 
+        {prompt: "Please enter your age (in years):", rows: 1, columns: 6, name: "age", required: true},
         {prompt: "How do you currently describe your gender identity? Please specify.", rows: 1, columns: 60, name: "gender"}
+    ]
+};
+
+const dietary_preferences = {
+    type: jsPsychSurveyMultiSelect,
+    questions: [
+        {
+            prompt: "Do you follow any of the following dietary practices? Select all that apply:",
+            options: [
+                "Vegetarian",
+                "Vegan",
+                "Gluten-free",
+                "Halal",
+                "Kosher",
+                "Dairy-free",
+                "Nut-free",
+                "Low-carb / Keto",
+                "Other",
+                "None / No dietary restrictions",
+                "I prefer not to answer"
+            ],
+            horizontal: false,
+            required: true,
+            name: 'dietary_preferences'
+        }
+    ]
+};
+
+const occupation = {
+    type: jsPsychSurveyText,
+    questions: [
+        {prompt: "What is your current occupation or field of work/study? (e.g., student, teacher, engineer, healthcare, etc.)", rows: 1, columns: 60, name: "occupation", required: false}
+    ]
+};
+
+const has_children = {
+    type: jsPsychSurveyMultiChoice,
+    questions: [
+        {
+            prompt: "Do you have any children?",
+            options: ["Yes", "No", "I prefer not to answer"],
+            horizontal: true,
+            required: true,
+            name: 'has_children'
+        }
     ]
 };
 
@@ -435,6 +486,7 @@ async function initializeExperiment() {
     timeline.push(welcome);
     timeline.push(fullscreen);
     timeline.push(consent);
+    timeline.push(consent_confirmation);
     timeline.push(instructions);
     
     // Generate trials and add to main procedure
@@ -448,6 +500,9 @@ async function initializeExperiment() {
     timeline.push(demographic_instructions);
     timeline.push(demographics);
     timeline.push(id_age);
+    timeline.push(dietary_preferences);
+    timeline.push(occupation);
+    timeline.push(has_children);
     timeline.push(save_data);
     timeline.push(goodbye);
     
