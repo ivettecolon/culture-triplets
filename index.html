@@ -33,9 +33,9 @@ const CONFIG = {
 
     
     // Trial configuration
-    numRandomTrials: 5,
-    numCheckTrials: 2,
-    numValidationTrials: 2,
+    numRandomTrials: 9,
+    numCheckTrials: 1,
+    numValidationTrials: 9,
     
     // Validation triplets - hardcoded for consistency
     // Set to null to randomly sample validation trials each time, otherwise provide a fixed set of triplets
@@ -49,7 +49,7 @@ const CONFIG = {
     // Other settings
     speedThreshold: 900,  // RT threshold for "going too fast" warning
     consentImage: "kc_lab_consent_prolific.png",
-    secretCode: "C119H2OR"
+    secretCode: "C12R1B6F"
 };
 
 // ============================================================================
@@ -250,7 +250,8 @@ const consent_confirmation = {
 const instructions = {
     type: jsPsychHtmlButtonResponse,
     stimulus: `<p>In each trial of this task, you will see three images: one target item on top, and two choices beneath the target item.</p>
-        <p>For each trial, <strong>please select the item that is most similar to the target item USING ANY CRITERIA.</strong></p>
+        <p>For each trial, <strong>please select the item that is most similar to the target item.</strong></p>
+        <p>Your responses should be based on the item that each image represents, rather than based on the physical appearance of the image alone.</p>
         <p>There will be ${n_main_trials} trials.</p>
         <p>Click 'Continue' to begin the test.</p>`,
     choices: ["Continue"],
@@ -424,7 +425,10 @@ const goodbye = {
         output += "Click the button below to complete the experiment.<br><br>";
         return output;
     },
-    choices: ['Complete Experiment']
+    choices: ['Complete Experiment'],
+    on_finish: function() {
+        window.location.assign(`https://app.prolific.com/submissions/complete?cc=${CONFIG.secretCode}`);
+    }
 };
 
 // ============================================================================
