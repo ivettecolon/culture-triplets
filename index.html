@@ -10,6 +10,7 @@
     <script src="https://unpkg.com/@jspsych/plugin-image-button-response@1.1.0"></script>
     <script src="https://unpkg.com/@jspsych/plugin-fullscreen@1.1.0"></script>
     <script src="https://unpkg.com/@jspsych/plugin-survey-multi-select@1.1.0"></script>
+    <script src="https://unpkg.com/@jspsych/plugin-survey-multi-choice@1.1.0"></script>
     <script src="https://unpkg.com/@jspsych/plugin-survey-text@1.1.0"></script>
     <script src="https://unpkg.com/@jspsych/plugin-preload@1.1.0"></script>
     <script src="https://unpkg.com/@jspsych-contrib/plugin-pipe"></script>
@@ -241,7 +242,7 @@ const consent = {
 
 const consent_confirmation = {
     type: jsPsychHtmlButtonResponse,
-    stimulus: `<p>I confirm that I have read and understood the volunteer information on the previous page. I understand that I can ask questions by contacting the researcher, Netaniel Rien, via Prolific messages or email (netaniel.rein@mrc-cbu.cam.ac.uk). I understand that my participation is voluntary. I am free to withdraw at any time, without giving a reason, without penalty or affecting my legal rights.</p>`,
+    stimulus: `<p>I confirm that I have read and understood the volunteer information on the previous page.<br> I understand that I can ask questions by contacting the researcher, Netaniel Rien, via Prolific messages or email (netaniel.rein@mrc-cbu.cam.ac.uk).<br> I understand that my participation is voluntary. <br> I am free to withdraw at any time, without giving a reason, without penalty or affecting my legal rights.</p>`,
     choices: ["I consent"]
 };
 
