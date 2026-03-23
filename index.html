@@ -33,7 +33,7 @@ const CONFIG = {
 
     
     // Trial configuration
-    numRandomTrials: 9,
+    numRandomTrials: 90,
     numCheckTrials: 1,
     numValidationTrials: 9,
     
@@ -48,7 +48,7 @@ const CONFIG = {
 
     // Other settings
     speedThreshold: 900,  // RT threshold for "going too fast" warning
-    consentImage: "kc_lab_consent_prolific.png",
+    consentImage: "kc_lab_consent_prolific.png", // this is for if you have an image-based consent form (we don't for the cultural triplets)
     secretCode: "C12R1B6F"
 };
 
@@ -233,16 +233,59 @@ const fullscreen = {
     fullscreen_mode: true
 };
 
-// Consent
-const consent = {
-    type: jsPsychImageButtonResponse,
-    stimulus: CONFIG.consentImage,
-    choices: ["Continue"]
+// Consent — 4 pages
+const consent_1 = {
+    type: jsPsychHtmlKeyboardResponse,
+    choices: [' '],
+    stimulus: `<div style="text-align:left; max-width:700px; margin:auto;">
+        <h2>Do I have to take part?</h2>
+        <p>Before deciding whether to participate, please read the following information about the study, including what it involves and how your data will be used.</p>
+        <p>Your participation is voluntary. You are free to withdraw at any time, without giving a reason.</p>
+        <p>Your data will be anonymised as soon as possible. If you withdraw before anonymisation, we will delete your data where possible.</p>
+        <p>If you have questions or would like more information, contact:<br>
+        Netaniel Rein (<a href="mailto:Netaniel.Rein@mrc-cbu.cam.ac.uk">Netaniel.Rein@mrc-cbu.cam.ac.uk</a>)</p>
+        <p><em>Press Space to continue.</em></p>
+    </div>`
 };
+
+const consent_2 = {
+    type: jsPsychHtmlKeyboardResponse,
+    choices: [' '],
+    stimulus: `<div style="text-align:left; max-width:700px; margin:auto;">
+        <h2>Data and Privacy</h2>
+        <p>This study is conducted by Netaniel Rein, with Matt Lambon-Ralph, Tim Rogers, and Ivette Colon, under the MRC Cognition and Brain Sciences Unit (University of Cambridge).</p>
+        <p>The data you provide will be used for research purposes and handled in accordance with data protection regulations. Data will be stored securely on systems associated with the MRC CBU.</p>
+        <p>Where possible, data will be anonymised and we will minimise the use of personally identifiable information. Some third-party tools may be used to collect responses, but no identifying information is intentionally stored in these systems.</p>
+        <p>For questions about data handling, contact:<br>
+        Netaniel Rein (<a href="mailto:Netaniel.Rein@mrc-cbu.cam.ac.uk">Netaniel.Rein@mrc-cbu.cam.ac.uk</a>)</p>
+        <p><em>Press Space to continue.</em></p>
+    </div>`
+};
+
+const consent_3 = {
+    type: jsPsychHtmlKeyboardResponse,
+    choices: [' '],
+    stimulus: `<div style="text-align:left; max-width:700px; margin:auto;">
+        <h2>Complaints</h2>
+        <p>If you have any concerns or complaints about the study, please contact:<br>
+        Netaniel Rein (<a href="mailto:Netaniel.Rein@mrc-cbu.cam.ac.uk">Netaniel.Rein@mrc-cbu.cam.ac.uk</a>)</p>
+        <p>Further procedures are available through the University of Cambridge if needed.</p>
+        <p><em>Press Space to continue.</em></p>
+    </div>`
+};
+
 
 const consent_confirmation = {
     type: jsPsychHtmlButtonResponse,
-    stimulus: `<p>I confirm that I have read and understood the volunteer information on the previous page.<br> I understand that I can ask questions by contacting the researcher, Netaniel Rien, via Prolific messages or email (netaniel.rein@mrc-cbu.cam.ac.uk).<br> I understand that my participation is voluntary. <br> I am free to withdraw at any time, without giving a reason, without penalty or affecting my legal rights.</p>`,
+    stimulus: `<div style="text-align:left; max-width:700px; margin:auto;">
+        <h2>Consent</h2>
+        <p>By continuing, you confirm that:</p>
+        <ul>
+            <li>You understand the information provided about the study</li>
+            <li>You know how to contact the researcher with questions</li>
+            <li>You understand that participation is voluntary and you may withdraw at any time without penalty</li>
+        </ul>
+    </div>`,
     choices: ["I consent"]
 };
 
@@ -431,6 +474,17 @@ const goodbye = {
     }
 };
 
+const breakTrial = {
+    type: jsPsychHtmlButtonResponse,
+    stimulus: function() {
+        const trialsCompleted = jsPsych.data.filter({trial_type: 'image-button-response'}).count();
+        return `<p><strong>Time for a break!</strong></p>
+                <p>You have completed <strong>${trialsCompleted}</strong> trials so far.</p>
+                <p>Take a moment to rest, then click the button below when you are ready to continue.</p>`;
+    },
+    choices: ['Continue']
+};
+
 // ============================================================================
 // MAIN EXECUTION
 // ============================================================================
@@ -463,17 +517,26 @@ async function initializeExperiment() {
     timeline.push(preload);
     timeline.push(welcome);
     timeline.push(fullscreen);
-    timeline.push(consent);
+    timeline.push(consent_1);
+    timeline.push(consent_2);
+    timeline.push(consent_3);
     timeline.push(consent_confirmation);
     timeline.push(instructions);
     
-    // Generate trials and add to main procedure
-    mainProcedure.timeline_variables = createTrialSequence(
+    // Generate trials and add to main procedure, with breaks every 250 trials
+    const allTrials = createTrialSequence(
         CONFIG.numRandomTrials,
         CONFIG.numCheckTrials,
         CONFIG.numValidationTrials
     );
-    timeline.push(mainProcedure);
+    const chunkSize = 250;
+    for (let i = 0; i < allTrials.length; i += chunkSize) {
+        const chunk = allTrials.slice(i, i + chunkSize);
+        timeline.push(Object.assign({}, mainProcedure, { timeline_variables: chunk }));
+        if (i + chunkSize < allTrials.length) {
+            timeline.push(breakTrial);
+        }
+    }
     
     timeline.push(demographic_instructions);
     timeline.push(demographics);
