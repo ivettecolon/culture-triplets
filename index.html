@@ -477,9 +477,10 @@ const goodbye = {
 const breakTrial = {
     type: jsPsychHtmlButtonResponse,
     stimulus: function() {
-        const trialsCompleted = jsPsych.data.filter({trial_type: 'image-button-response'}).count();
+        const total = CONFIG.numRandomTrials + CONFIG.numCheckTrials + CONFIG.numValidationTrials;
+        const pct = Math.round((completed_main_trials / total) * 100);
         return `<p><strong>Time for a break!</strong></p>
-                <p>You have completed <strong>${trialsCompleted}</strong> trials so far.</p>
+                <p>You are <strong>${pct}%</strong> of the way through the experiment.</p>
                 <p>Take a moment to rest, then click the button below when you are ready to continue.</p>`;
     },
     choices: ['Continue']
@@ -523,13 +524,13 @@ async function initializeExperiment() {
     timeline.push(consent_confirmation);
     timeline.push(instructions);
     
-    // Generate trials and add to main procedure, with breaks every 250 trials
+    // Generate trials and add to main procedure, with breaks every 1/4 of the experiment
     const allTrials = createTrialSequence(
         CONFIG.numRandomTrials,
         CONFIG.numCheckTrials,
         CONFIG.numValidationTrials
     );
-    const chunkSize = 250;
+    const chunkSize = Math.ceil(allTrials.length / 4);
     for (let i = 0; i < allTrials.length; i += chunkSize) {
         const chunk = allTrials.slice(i, i + chunkSize);
         timeline.push(Object.assign({}, mainProcedure, { timeline_variables: chunk }));
