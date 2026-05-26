@@ -12,7 +12,6 @@
     <script src="https://unpkg.com/@jspsych/plugin-survey-multi-select@1.1.0"></script>
     <script src="https://unpkg.com/@jspsych/plugin-survey-multi-choice@1.1.0"></script>
     <script src="https://unpkg.com/@jspsych/plugin-survey-text@1.1.0"></script>
-    <script src="https://unpkg.com/@jspsych/plugin-survey-likert@1.1.0"></script>
     <script src="https://unpkg.com/@jspsych/plugin-preload@1.1.0"></script>
     <script src="https://unpkg.com/@jspsych-contrib/plugin-pipe"></script>
 </head>
@@ -25,8 +24,8 @@
 
 const CONFIG = {
     // Image directory settings
-    imageDirectory: "stimuli/food2/",  // Directory containing your images
-    imageExtension: ".png",                // Image file extension (.png, .jpg, etc.)
+    imageDirectory: "stimuli/animals2/",  // Directory containing your images
+    imageExtension: ".jpg",                // Image file extension (.png, .jpg, etc.)
     
     // Option 1: Auto-discover images (fetches manifest.json from imageDirectory)
     // Create manifest.json with: {"images": ["image1.png", "image2.png", ...]}
@@ -34,9 +33,9 @@ const CONFIG = {
 
     
     // Trial configuration
-    numRandomTrials: 900, //900
-    numCheckTrials: 10, //10
-    numValidationTrials: 90, //90
+    numRandomTrials: 900,
+    numCheckTrials: 10,
+    numValidationTrials: 90,
     
     // Validation triplets - hardcoded for consistency
     // Set to null to randomly sample validation trials each time, otherwise provide a fixed set of triplets
@@ -44,7 +43,7 @@ const CONFIG = {
     
     // Data saving
     experimentId: "04d48oMdNLEW",
-    filenamePrefix: "crosscultural_food",
+    filenamePrefix: "crosscultural_animals",
     
 
     // Other settings
@@ -459,44 +458,6 @@ const has_children = {
     ]
 };
 
-const food_habits_yesno = {
-    type: jsPsychSurveyMultiChoice,
-    questions: [
-        {
-            prompt: "Do you cook meals from basic/raw ingredients (as opposed to using ready-made meals or ordering food)?",
-            options: ["Yes", "No", "I prefer not to answer"],
-            horizontal: true,
-            required: true,
-            name: 'cooks_from_scratch'
-        },
-        {
-            prompt: "Do you regularly shop for groceries (e.g., visiting a supermarket, market, or grocery store)?",
-            options: ["Yes", "No", "I prefer not to answer"],
-            horizontal: true,
-            required: true,
-            name: 'grocery_shopping'
-        }
-    ]
-};
-
-const food_habits_frequency = {
-    type: jsPsychSurveyLikert,
-    questions: [
-        {
-            prompt: "How many times per week do you typically cook a meal from basic/raw ingredients?",
-            labels: ["0 (never)", "1", "2", "3", "4", "5", "6-7 (daily)"],
-            required: true,
-            name: 'cook_frequency'
-        },
-        {
-            prompt: "How many times per week do you typically shop for groceries?",
-            labels: ["0 (never)", "1", "2", "3", "4", "5", "6-7 (daily)"],
-            required: true,
-            name: 'grocery_frequency'
-        }
-    ]
-};
-
 const goodbye = {
     type: jsPsychHtmlButtonResponse,
     stimulus: function(){
@@ -584,8 +545,6 @@ async function initializeExperiment() {
     timeline.push(dietary_preferences);
     timeline.push(occupation);
     timeline.push(has_children);
-    timeline.push(food_habits_yesno);
-    timeline.push(food_habits_frequency);
     timeline.push(save_data);
     timeline.push(goodbye);
     
