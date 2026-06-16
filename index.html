@@ -33,9 +33,9 @@ const CONFIG = {
 
     
     // Trial configuration
-    numRandomTrials: 900,
-    numCheckTrials: 10,
-    numValidationTrials: 90,
+    numRandomTrials: 900, // 900
+    numCheckTrials: 10, // 10
+    numValidationTrials: 90, // 90
     
     // Validation triplets - hardcoded for consistency
     // Set to null to randomly sample validation trials each time, otherwise provide a fixed set of triplets
@@ -413,27 +413,45 @@ const id_age = {
     ]
 };
 
-const dietary_preferences = {
+const pet_ownership = {
     type: jsPsychSurveyMultiSelect,
     questions: [
         {
-            prompt: "Do you follow any of the following dietary practices? Select all that apply:",
+            prompt: "Do you have a pet? If so, which? Select all that apply:",
             options: [
-                "Vegetarian",
-                "Vegan",
-                "Gluten-free",
-                "Halal",
-                "Kosher",
-                "Dairy-free",
-                "Nut-free",
-                "Low-carb / Keto",
+                "Dog",
+                "Cat",
+                "Bird",
+                "Fish",
+                "Reptile (e.g., lizard, snake, turtle)",
+                "Small mammal (e.g., rabbit, hamster, guinea pig)",
                 "Other",
-                "None / No dietary restrictions",
+                "I do not have a pet",
                 "I prefer not to answer"
             ],
             horizontal: false,
             required: true,
-            name: 'dietary_preferences'
+            name: 'pet_ownership'
+        }
+    ]
+};
+
+const animal_encounters = {
+    type: jsPsychSurveyMultiChoice,
+    questions: [
+        {
+            prompt: "How often do you encounter animals in your day-to-day life?",
+            options: [
+                "Multiple times a day",
+                "About once a day",
+                "A few times a week",
+                "About once a week",
+                "Rarely",
+                "Never"
+            ],
+            horizontal: false,
+            required: true,
+            name: 'animal_encounters'
         }
     ]
 };
@@ -542,7 +560,8 @@ async function initializeExperiment() {
     timeline.push(demographic_instructions);
     timeline.push(demographics);
     timeline.push(id_age);
-    timeline.push(dietary_preferences);
+    timeline.push(pet_ownership);
+    timeline.push(animal_encounters);
     timeline.push(occupation);
     timeline.push(has_children);
     timeline.push(save_data);
