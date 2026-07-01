@@ -24,7 +24,7 @@
 
 const CONFIG = {
     // Image directory settings
-    imageDirectory: "stimuli/animals2/",  // Directory containing your images
+    imageDirectory: "stimuli/tools2/",  // Directory containing your images
     imageExtension: ".jpg",                // Image file extension (.png, .jpg, etc.)
     
     // Option 1: Auto-discover images (fetches manifest.json from imageDirectory)
@@ -33,9 +33,9 @@ const CONFIG = {
 
     
     // Trial configuration
-    numRandomTrials: 900, // 900
-    numCheckTrials: 10, // 10
-    numValidationTrials: 90, // 90
+    numRandomTrials: 9, // 900
+    numCheckTrials: 1, // 10
+    numValidationTrials: 1, // 90
     
     // Validation triplets - hardcoded for consistency
     // Set to null to randomly sample validation trials each time, otherwise provide a fixed set of triplets
@@ -43,7 +43,7 @@ const CONFIG = {
     
     // Data saving
     experimentId: "04d48oMdNLEW",
-    filenamePrefix: "crosscultural_animals",
+    filenamePrefix: "crosscultural_tools",
     
 
     // Other settings
@@ -413,48 +413,44 @@ const id_age = {
     ]
 };
 
-const pet_ownership = {
+const country = {
+    type: jsPsychSurveyText,
+    questions: [
+        {prompt: "What country do you currently live in?", rows: 1, columns: 40, name: "country", required: true}
+    ]
+};
+
+const crafts = {
     type: jsPsychSurveyMultiSelect,
     questions: [
         {
-            prompt: "Do you have a pet? If so, which? Select all that apply:",
+            prompt: "Do you participate in any of the following crafts? Select all that apply:",
             options: [
-                "Dog",
-                "Cat",
-                "Bird",
-                "Fish",
-                "Reptile (e.g., lizard, snake, turtle)",
-                "Small mammal (e.g., rabbit, hamster, guinea pig)",
+                "Cooking",
+                "Writing",
+                "Wood working",
+                "Metal working",
+                "Sewing",
+                "Drawing",
+                "Gardening",
                 "Other",
-                "I do not have a pet",
-                "I prefer not to answer"
+                "None"
             ],
             horizontal: false,
             required: true,
-            name: 'pet_ownership'
+            name: 'crafts'
         }
     ]
 };
 
-const animal_encounters = {
-    type: jsPsychSurveyMultiChoice,
+const crafts_other = {
+    type: jsPsychSurveyText,
     questions: [
-        {
-            prompt: "How often do you encounter animals in your day-to-day life?",
-            options: [
-                "Multiple times a day",
-                "About once a day",
-                "A few times a week",
-                "About once a week",
-                "Rarely",
-                "Never"
-            ],
-            horizontal: false,
-            required: true,
-            name: 'animal_encounters'
-        }
+        {prompt: "If you selected 'Other', please specify:", rows: 1, columns: 60, name: "crafts_other", required: false}
     ]
 };
+
+
 
 const occupation = {
     type: jsPsychSurveyText,
@@ -560,8 +556,9 @@ async function initializeExperiment() {
     timeline.push(demographic_instructions);
     timeline.push(demographics);
     timeline.push(id_age);
-    timeline.push(pet_ownership);
-    timeline.push(animal_encounters);
+    timeline.push(country);
+    timeline.push(crafts);
+    timeline.push(crafts_other);
     timeline.push(occupation);
     timeline.push(has_children);
     timeline.push(save_data);
